@@ -217,6 +217,7 @@ if (JSON.stringify(resp).toLowerCase().includes(q)) return true;
 }
 return false;
 }
+if (typeof Component === "function") {
 Component({
 options: {
 styleIsolation: "isolated",
@@ -900,3 +901,4 @@ if (tx && tx.error) copyClipboard(tx.error, "Error Message Copied!");
 }
 }
 });
+}

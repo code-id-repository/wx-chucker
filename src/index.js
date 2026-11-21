@@ -244,6 +244,7 @@ function matchesSearch(t, q) {
     return false;
 }
 
+if (typeof Component === "function") {
 Component({
     options: {
         styleIsolation: "isolated",
@@ -987,3 +988,4 @@ Component({
         }
     }
 });
+}

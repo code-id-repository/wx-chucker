@@ -329,5 +329,13 @@ class ChuckerStore {
         return tx ? this.resolveDetail(tx) : null;
     }
 }
+function getGlobalStore() {
+    const root = typeof wx !== "undefined" ? wx : typeof global !== "undefined" ? global : {};
+    if (!root.__chucker_store__) {
+        root.__chucker_store__ = new ChuckerStore();
+    }
+    return root.__chucker_store__;
+}
+
 exports.ChuckerStore = ChuckerStore;
-exports.chuckerStore = new ChuckerStore();
+exports.chuckerStore = getGlobalStore();
