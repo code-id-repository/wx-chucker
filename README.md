@@ -6,6 +6,7 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/wx-chucker"><img src="https://img.shields.io/npm/v/wx-chucker.svg?color=blue" alt="npm version" /></a>
+  <a href="https://github.com/code-id-repository/wx-chucker"><img src="https://img.shields.io/badge/GitHub-code--id--repository%2Fwx--chucker-181717.svg?logo=github" alt="GitHub Repo" /></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT" /></a>
   <img src="https://img.shields.io/badge/minified-~25KB-brightgreen.svg" alt="Minified Size" />
   <img src="https://img.shields.io/badge/platform-WeChat%20%7C%20TCMPP-07C160.svg" alt="Platform" />
@@ -135,6 +136,13 @@ npm run build
 # Run test suite against built distribution bundle
 npm run test:dist
 ```
+
+---
+
+## 🔗 Repository & Issues
+
+- **GitHub**: [https://github.com/code-id-repository/wx-chucker](https://github.com/code-id-repository/wx-chucker)
+- **Issues**: [https://github.com/code-id-repository/wx-chucker/issues](https://github.com/code-id-repository/wx-chucker/issues)
 
 ---
 
