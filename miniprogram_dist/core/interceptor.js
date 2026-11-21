@@ -40,7 +40,7 @@ try { target[methodName] = getWrapped(); } catch (_) {}
 }
 function suppressConsoleNoise() {
 if (typeof console === "undefined") return;
-const noise = ["onSearchInput", "components/chucker", "[Chucker]"];
+const noise = ["onSearchInput"];
 ["log", "info", "debug", "warn"].forEach((method) => {
 hookMethod(console, method, (orig) => function (...args) {
 try {

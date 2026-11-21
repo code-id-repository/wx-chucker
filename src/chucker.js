@@ -42,6 +42,9 @@ function initChucker(userConfig = {}) {
     }
 
     (0, interceptor_1.installInterceptors)(config);
+    try {
+        console.log(`[wx-chucker] Initialized (enabled: ${config.enabled})`);
+    } catch (_) {}
     return store_1.chuckerStore;
 }
 exports.initChucker = initChucker;
