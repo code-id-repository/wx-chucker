@@ -131,6 +131,13 @@ npm run test:dist
 
 ---
 
+## Author
+
+**Ryan Agung Samudra**
+- Email: [ryansamudra67@gmail.com](mailto:ryansamudra67@gmail.com)
+
+---
+
 ## License
 
 MIT
