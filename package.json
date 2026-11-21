@@ -32,10 +32,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/wx-chucker.git"
+    "url": "https://github.com/ryanagungsamudra/wx-chucker.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/wx-chucker/issues"
+    "url": "https://github.com/ryanagungsamudra/wx-chucker/issues"
   },
-  "homepage": "https://github.com/your-username/wx-chucker#readme"
+  "homepage": "https://github.com/ryanagungsamudra/wx-chucker#readme"
 }
