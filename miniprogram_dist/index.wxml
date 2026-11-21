@@ -1,0 +1,75 @@
+<view wx:if="{{enabled}}" class="chucker-root"><view
+class="chucker-fab chucker-fab--{{theme}} {{stats.inFlight > 0 ? 'chucker-fab--pulse' : ''}} {{isFabSnapping ? 'chucker-fab--snapping' : ''}} {{isDocked ? 'chucker-fab--docked chucker-fab--docked-' + dockSide : ''}} {{isFabHidden ? 'chucker-fab--hidden' : ''}}"
+style="left: {{fabX}}px; top: {{fabY}}px;"
+catchtouchstart="onFabTouchStart"
+catchtouchmove="onFabTouchMove"
+catchtouchend="onFabTouchEnd"
+catchlongpress="onFabLongPress"
+><view class="chucker-fab__icon"><view class="chucker-ico chucker-ico--bolt"></view></view><view class="chucker-fab__badge-col"><text class="chucker-fab__count">{{stats.total}}</text><text wx:if="{{stats.errors > 0}}" class="chucker-fab__error-count">{{stats.errors}}</text></view><view wx:if="{{stats.inFlight > 0}}" class="chucker-fab__dot"></view></view><view
+wx:if="{{isFabHidden && isDevTools}}"
+class="chucker-devtools-notch chucker-devtools-notch--{{dockSide}}"
+catchtap="onUnhideFab"
+><view class="chucker-ico chucker-ico--bolt"></view></view><view wx:if="{{isOpen}}" class="chucker-modal"><view class="chucker-backdrop" catchtap="closeModal"></view><view class="chucker-panel chucker-theme--{{theme}}"><view class="chucker-safe-top" style="height: {{statusBarHeight}}px;"></view><view wx:if="{{selectedTransaction}}" class="chucker-navbar"><view class="chucker-navbar__back" catchtap="onBackToList"><view class="chucker-ico chucker-ico--chevron-left"></view><text class="chucker-navbar__back-text">Back</text></view><text class="chucker-navbar__title">Detail</text><view class="chucker-navbar__actions"><view class="chucker-icon-btn" catchtap="onToggleTheme"><view class="chucker-ico {{theme === 'dark' ? 'chucker-ico--sun' : 'chucker-ico--moon'}}"></view></view><view class="chucker-icon-btn" catchtap="closeModal"><view class="chucker-ico chucker-ico--close"></view></view></view></view><block wx:if="{{selectedTransaction}}"><view class="chucker-detail-subhead"><view class="chucker-detail-subhead__info"><view class="chucker-badge chucker-badge--{{selectedTransaction.method}} chucker-badge--lg">
+{{selectedTransaction.type === 'BRIDGE' ? 'NATIVE' : selectedTransaction.method}}
+</view><text class="chucker-detail-subhead__name" selectable>{{selectedTransaction.name}}</text></view><view class="chucker-detail-subhead__actions"><view class="chucker-btn chucker-btn--replay" catchtap="onReplayRequest"><view class="chucker-ico chucker-ico--replay" style="margin-right: 6rpx;"></view><text>Replay</text></view><view class="chucker-btn chucker-btn--pill" catchtap="onCopyCurl">
+{{selectedTransaction.type === 'BRIDGE' ? 'Copy JS' : 'Copy cURL'}}
+</view></view></view><view class="chucker-segmented-wrap"><view class="chucker-segmented"><view
+class="chucker-segmented__tab {{detailTab === 'overview' ? 'chucker-segmented__tab--active' : ''}}"
+data-tab="overview"
+catchtap="onDetailTabTap"
+>Overview</view><view
+class="chucker-segmented__tab {{detailTab === 'request' ? 'chucker-segmented__tab--active' : ''}}"
+data-tab="request"
+catchtap="onDetailTabTap"
+>Request</view><view
+class="chucker-segmented__tab {{detailTab === 'response' ? 'chucker-segmented__tab--active' : ''}}"
+data-tab="response"
+catchtap="onDetailTabTap"
+>Response</view><view
+class="chucker-segmented__tab {{detailTab === 'curl' ? 'chucker-segmented__tab--active' : ''}}"
+data-tab="curl"
+catchtap="onDetailTabTap"
+>{{selectedTransaction.type === 'BRIDGE' ? 'Replay JS' : 'cURL'}}</view></view></view><scroll-view class="chucker-detail-body" scroll-y><view wx:if="{{detailTab === 'overview'}}" class="chucker-detail-section"><view class="chucker-target-card"><view class="chucker-target-card__header"><view class="chucker-target-card__host-col"><view class="chucker-badge chucker-badge--{{selectedTransaction.method}} chucker-badge--sm">
+{{selectedTransaction.type === 'BRIDGE' ? 'NATIVE' : selectedTransaction.method}}
+</view><text class="chucker-target-card__host">{{selectedTransaction.host || 'Native Plugin'}}</text></view><view class="chucker-btn chucker-btn--xs chucker-copy-btn" catchtap="onCopyUrl"><view class="chucker-ico chucker-ico--export" style="width: 18rpx; height: 18rpx; margin-right: 6rpx;"></view><text>Copy URL</text></view></view><view class="chucker-target-card__body" selectable><text class="chucker-target-card__full-url">{{selectedTransaction.url}}</text></view></view><view class="chucker-kv-card"><view class="chucker-kv"><text class="chucker-kv__key">Category</text><text class="chucker-kv__val">{{selectedTransaction.type === 'BRIDGE' ? 'Native Plugin (Host Bridge)' : 'Network (' + selectedTransaction.type + ')'}}</text></view><view class="chucker-kv"><text class="chucker-kv__key">Method</text><text class="chucker-kv__val">{{selectedTransaction.method}}</text></view><view class="chucker-kv"><text class="chucker-kv__key">Status</text><text class="chucker-kv__val {{selectedTransaction.isError ? 'text-danger' : 'text-success'}}">{{selectedTransaction.statusCode}} ({{selectedTransaction.statusText}})</text></view><view class="chucker-kv"><text class="chucker-kv__key">Duration</text><text class="chucker-kv__val chucker-kv__duration {{selectedTransaction.durationMs >= 1000 ? 'text-danger' : selectedTransaction.durationMs >= 300 ? 'text-warning' : 'text-success'}}">{{selectedTransaction.durationMs}} ms{{selectedTransaction.durationMs >= 1000 ? ' (Slow Request)' : ''}}</text></view><view class="chucker-kv"><text class="chucker-kv__key">Timestamp</text><text class="chucker-kv__val">{{selectedTransaction.timeFull || selectedTransaction.timeFormatted}}</text></view><view wx:if="{{selectedTransaction.error}}" class="chucker-kv chucker-kv--error"><text class="chucker-kv__key text-danger">Error</text><view class="chucker-kv__val-wrap"><text class="chucker-kv__val text-danger" selectable>{{selectedTransaction.error}}</text><view class="chucker-btn chucker-btn--xs" catchtap="onCopyErrorMessage" style="margin-top: 10rpx; width: fit-content;">Copy Error</view></view></view></view></view><view wx:elif="{{detailTab === 'request'}}" class="chucker-detail-section"><view class="chucker-box-header"><text class="chucker-box-title">{{selectedTransaction.type === 'BRIDGE' ? 'Bridge Metadata' : 'Request Headers'}}</text><view class="chucker-btn chucker-btn--xs" catchtap="onCopyRequestHeaders">Copy Headers</view></view><view class="chucker-codebox" selectable><text>{{selectedTransaction.requestHeadersFormatted || '{}'}}</text></view><view class="chucker-box-header" style="margin-top: 28rpx;"><text class="chucker-box-title">{{selectedTransaction.type === 'BRIDGE' ? 'Payload Parameters' : (selectedTransaction.method === 'GET' ? 'Query Parameters (URL)' : 'Request Body')}}</text><view class="chucker-btn chucker-btn--xs" catchtap="onCopyRequestBody">Copy Payload</view></view><view class="chucker-codebox" selectable><text>{{selectedTransaction.requestBodyFormatted || '(No request body sent)'}}</text></view></view><view wx:elif="{{detailTab === 'response'}}" class="chucker-detail-section"><view wx:if="{{selectedTransaction.type !== 'BRIDGE'}}" class="chucker-box-header"><text class="chucker-box-title">Response Headers</text><view class="chucker-btn chucker-btn--xs" catchtap="onCopyResponseHeaders">Copy Headers</view></view><view wx:if="{{selectedTransaction.type !== 'BRIDGE'}}" class="chucker-codebox" selectable><text>{{selectedTransaction.responseHeadersFormatted || '{}'}}</text></view><view class="chucker-box-header" style="{{selectedTransaction.type !== 'BRIDGE' ? 'margin-top: 28rpx;' : ''}}"><text class="chucker-box-title">{{selectedTransaction.type === 'BRIDGE' ? 'Bridge Return Data' : 'Response Body (' + selectedTransaction.statusText + ')'}}</text><view class="chucker-btn chucker-btn--xs" catchtap="onCopyResponseBody">Copy Response</view></view><view class="chucker-codebox" selectable><text>{{selectedTransaction.responseBodyFormatted || '(Empty Response Body)'}}</text></view></view><view wx:elif="{{detailTab === 'curl'}}" class="chucker-detail-section"><view class="chucker-box-header"><text class="chucker-box-title">{{selectedTransaction.type === 'BRIDGE' ? 'Executable JS Code' : 'Terminal cURL Command'}}</text><view class="chucker-btn chucker-btn--xs" catchtap="onCopyCurl">Copy cURL</view></view><view class="chucker-codebox chucker-codebox--mono" selectable><text>{{selectedTransaction.curl}}</text></view></view></scroll-view></block><block wx:else><view class="chucker-header-row"><view class="chucker-header-row__left"><text class="chucker-header-title">Chucker</text><view class="chucker-pill-count">{{stats.total}}</view></view><view class="chucker-header-row__right"><view class="chucker-action-pill" catchtap="onExportLogs"><view class="chucker-ico chucker-ico--export"></view><text>Export</text></view><view class="chucker-action-pill" catchtap="onClearAll"><view class="chucker-ico chucker-ico--clear"></view><text>Clear</text></view><view class="chucker-icon-btn" catchtap="onToggleTheme"><view class="chucker-ico {{theme === 'dark' ? 'chucker-ico--sun' : 'chucker-ico--moon'}}"></view></view><view class="chucker-icon-btn" catchtap="closeModal"><view class="chucker-ico chucker-ico--close"></view></view></view></view><view wx:if="{{isFabHidden}}" class="chucker-banner-unhide" catchtap="onUnhideFab"><view class="chucker-banner-unhide__left"><view class="chucker-ico chucker-ico--bolt" style="color: #fbbf24; margin-right: 8rpx; width: 18rpx; height: 18rpx;"></view><text>Floating badge is hidden (Shake phone to open)</text></view><view class="chucker-banner-unhide__btn">Restore Badge</view></view><view class="chucker-search-wrap"><view class="chucker-search-row"><view class="chucker-search-box"><view class="chucker-ico chucker-ico--search chucker-search-ico"></view><input
+class="chucker-search-field"
+placeholder="Search logs..."
+placeholder-class="chucker-search-ph"
+value="{{searchQuery}}"
+bindinput="onSearchInput"
+bindconfirm="onSearchConfirm"
+confirm-type="search"
+/><view wx:if="{{searchQuery}}" class="chucker-search-clear" catchtap="onClearSearch"><view class="chucker-ico chucker-ico--close" style="width: 18rpx; height: 18rpx;"></view></view></view><view
+wx:if="{{stats.errors > 0}}"
+class="chucker-chip chucker-chip--error {{filterOnlyErrors ? 'chucker-chip--active-error' : ''}}"
+catchtap="onToggleErrorsOnly"
+><text class="chucker-chip__dot">●</text><text>{{stats.errors}} err{{filterOnlyErrors ? ' ✕' : ''}}</text></view><view
+wx:if="{{stats.slowCount > 0}}"
+class="chucker-chip chucker-chip--slow {{filterOnlySlow ? 'chucker-chip--active-slow' : ''}}"
+catchtap="onToggleSlowOnly"
+><view class="chucker-ico chucker-ico--bolt" style="width: 18rpx; height: 18rpx;"></view><text>{{stats.slowCount}} slow{{filterOnlySlow ? ' ✕' : ''}}</text></view></view></view><view class="chucker-categories-wrap"><view class="chucker-categories"><view
+class="chucker-cat-tab {{activeTab === 'all' ? 'chucker-cat-tab--active' : ''}}"
+data-tab="all"
+catchtap="onTabTap"
+><text class="chucker-cat-tab__title">All</text><text class="chucker-cat-tab__count">({{stats.total}})</text></view><view
+class="chucker-cat-tab {{activeTab === 'network' ? 'chucker-cat-tab--active' : ''}}"
+data-tab="network"
+catchtap="onTabTap"
+><text class="chucker-cat-tab__title">Network</text><text class="chucker-cat-tab__count">({{stats.networkCount}})</text></view><view
+class="chucker-cat-tab {{activeTab === 'native' ? 'chucker-cat-tab--active' : ''}}"
+data-tab="native"
+catchtap="onTabTap"
+><text class="chucker-cat-tab__title">Native</text><text class="chucker-cat-tab__count">({{stats.nativeCount}})</text></view></view></view><scroll-view class="chucker-list" scroll-y><block wx:if="{{filteredTransactions.length > 0}}"><view
+wx:for="{{filteredTransactions}}"
+wx:key="id"
+class="chucker-item {{item.isError ? 'chucker-item--has-error' : ''}}"
+data-id="{{item.id}}"
+catchtap="onItemTap"
+><view class="chucker-item__badge-col"><view class="chucker-badge chucker-badge--{{item.method}}">
+{{item.type === 'BRIDGE' ? 'NATIVE' : item.method}}
+</view><view class="chucker-status-pill chucker-status-pill--{{item.isInFlight ? 'pending' : (item.isError ? 'error' : 'success')}}">
+{{item.isInFlight ? '···' : (item.statusCode || (item.isError ? 'ERR' : 'OK'))}}
+</view></view><view class="chucker-item__content-col"><view class="chucker-item__top-row"><text class="chucker-item__title">{{item.type === 'BRIDGE' ? item.name : (item.path || item.url)}}</text><view
+wx:if="{{!item.isInFlight && item.durationMs > 0}}"
+class="chucker-item__duration chucker-item__duration--{{item.latencyLevel}}"
+><text class="chucker-item__duration-val">{{item.durationMs}}</text><text class="chucker-item__duration-unit">ms</text></view><text wx:elif="{{item.isInFlight}}" class="chucker-item__duration chucker-item__duration--pending">···</text></view><view class="chucker-item__bottom-row"><text class="chucker-item__host">{{item.host || 'Native Plugin'}}</text><text class="chucker-item__time">{{item.timeFormatted}}</text></view></view><view class="chucker-item__chevron-col"><view class="chucker-ico chucker-ico--chevron-right"></view></view></view></block><view wx:else class="chucker-empty"><view class="chucker-ico chucker-ico--search" style="width: 44rpx; height: 44rpx; margin-bottom: 16rpx; opacity: 0.35;"></view><text class="chucker-empty__text">No {{filterOnlyErrors ? 'error' : activeTab === 'native' ? 'native plugin' : activeTab === 'network' ? 'network' : ''}} transactions captured yet.</text></view></scroll-view></block></view></view></view>

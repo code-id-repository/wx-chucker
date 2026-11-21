@@ -1,0 +1,41 @@
+{
+  "name": "wx-chucker",
+  "version": "1.0.0",
+  "description": "In-App Network & Native Bridge Inspector for WeChat Mini-Programs (Chucker for WeChat / TCMPP)",
+  "main": "miniprogram_dist/index.js",
+  "miniprogram": "miniprogram_dist",
+  "types": "miniprogram_dist/index.d.ts",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node tests/run_all.js",
+    "test:dist": "TARGET_DIR=./miniprogram_dist node tests/run_all.js",
+    "prepublishOnly": "npm test && npm run build && npm run test:dist"
+  },
+  "keywords": [
+    "wechat",
+    "miniprogram",
+    "chucker",
+    "network-inspector",
+    "devtools",
+    "tcmpp",
+    "curl",
+    "interceptor",
+    "http",
+    "native-bridge"
+  ],
+  "files": [
+    "miniprogram_dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "author": "Ryan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/wx-chucker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/wx-chucker/issues"
+  },
+  "homepage": "https://github.com/your-username/wx-chucker#readme"
+}
