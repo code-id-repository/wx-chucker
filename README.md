@@ -29,23 +29,41 @@ A production-grade developer and QA inspection suite tailored for WeChat Mini-Pr
 
 ---
 
-## 📦 Installation
+## 📦 Installation & Setup Guide
+
+### Step 1: Install via npm
+
+In your Mini-Program project root:
 
 ```bash
+# If your project does not have a package.json yet, initialize it first:
+npm init -y
+
+# Install wx-chucker:
 npm install wx-chucker
 ```
 
-In WeChat Developer Tools:
-1. Click **Tools (工具)** in the top menu bar.
-2. Select **Build npm (构建 npm)**.
+### Step 2: Build npm in WeChat / TCMPP DevTools (CRITICAL)
+
+> [!IMPORTANT]
+> In WeChat and TCMPP Mini-Programs, running `npm install` only downloads files into `node_modules/`. The runtime **cannot** read directly from `node_modules/`. You **must** build the npm package in your IDE:
+
+1. Open **WeChat Developer Tools** or **TCSAS DevTools**.
+2. In the top menu bar, click:
+   👉 **Tools (工具)** → **Build npm (构建 npm)**.
+3. Wait for the success dialog: `"构建完成"` (Build finished).
+   *(This compiles `node_modules/wx-chucker/miniprogram_dist/` into `miniprogram_npm/wx-chucker/`)*.
 
 ---
 
 ## ⚡ Quick Start
 
-### 1. Initialize in `app.js`
+### Step 3: Initialize in `app.js`
+
+Add the import at the top of your `app.js` and call `initChucker()` inside `onLaunch`:
 
 ```javascript
+// At the top of app.js
 const { initChucker } = require('wx-chucker');
 
 App({
@@ -59,9 +77,9 @@ App({
 });
 ```
 
-### 2. Register Component in `app.json` or Page JSON
+### Step 4: Register Component in `app.json` or Page JSON
 
-Register the component globally in `app.json`:
+Register the component globally in `app.json` (or in any specific page JSON):
 
 ```json
 {
@@ -71,11 +89,38 @@ Register the component globally in `app.json`:
 }
 ```
 
-### 3. Add to Page WXML
+### Step 5: Add Component Tag in Page WXML
+
+In your page's `.wxml` file (e.g. `pages/home/index.wxml`):
 
 ```html
 <chucker />
 ```
+
+---
+
+## 🔍 Troubleshooting FAQ
+
+### 1. `Component not found: wx-chucker` or `未找到自定义组件`
+- **Cause**: You ran `npm install`, but did not click **Build npm (构建 npm)** in the IDE.
+- **Fix**: In the IDE top menu bar, click **Tools (工具)** → **Build npm (构建 npm)**. Ensure the folder `miniprogram_npm/wx-chucker/` appears in your project root.
+
+### 2. `ReferenceError: initChucker is not defined`
+- **Cause**: `initChucker()` was called in `onLaunch()` without importing it first.
+- **Fix**: Add `const { initChucker } = require('wx-chucker');` at the very top of `app.js`.
+
+### 3. `未找到可以构建的 npm 包` (No npm package found to build)
+- **Cause**: Your project root `package.json` was missing the `"name"` and `"version"` fields.
+- **Fix**: Run `npm init -y` or ensure `package.json` has:
+  ```json
+  {
+    "name": "your-miniprogram-name",
+    "version": "1.0.0",
+    "dependencies": {
+      "wx-chucker": "^1.0.1"
+    }
+  }
+  ```
 
 ---
 
