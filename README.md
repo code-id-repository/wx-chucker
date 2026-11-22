@@ -29,69 +29,55 @@ A production-grade developer and QA inspection suite tailored for WeChat Mini-Pr
 
 ---
 
-## 📦 Installation & Setup Guide
+## 📦 Installation & Quick Start
 
-### Step 1: Install via npm
+### 1. Install via npm
 
 In your Mini-Program project root:
 
 ```bash
-# If your project does not have a package.json yet, initialize it first:
-npm init -y
-
-# Install wx-chucker:
 npm install wx-chucker
 ```
 
-### Step 2: Build npm in WeChat / TCMPP DevTools (CRITICAL)
-
-> [!IMPORTANT]
-> In WeChat and TCMPP Mini-Programs, running `npm install` only downloads files into `node_modules/`. The runtime **cannot** read directly from `node_modules/`. You **must** build the npm package in your IDE:
-
-1. Open **WeChat Developer Tools** or **TCSAS DevTools**.
-2. In the top menu bar, click:
-   👉 **Tools (工具)** → **Build npm (构建 npm)**.
-3. Wait for the success dialog: `"构建完成"` (Build finished).
-   *(This compiles `node_modules/wx-chucker/miniprogram_dist/` into `miniprogram_npm/wx-chucker/`)*.
+> [!TIP]
+> **Zero Configuration for TCMPP / WeChat**: `wx-chucker` automatically detects your Mini-Program project and auto-syncs the component into `components/chucker/` during `npm install`. No manual file copying required!
 
 ---
 
-## ⚡ Quick Start
+### 2. Initialize in `app.js`
 
-### Step 3: Initialize in `app.js`
-
-Add the import at the top of your `app.js` and call `initChucker()` inside `onLaunch`:
+Add the initialization at the top of your `app.js` (before other modules make network calls):
 
 ```javascript
 // At the top of app.js
-const { initChucker } = require('wx-chucker');
+const { initChucker } = require('./components/chucker/chucker');
 
-App({
-  onLaunch() {
-    initChucker({
-      // Auto-disabled in production release builds by default
-      autoDetectEnv: true,
-      maskSensitive: false // Set true to mask tokens & PII during security pentests
-    });
-  }
+initChucker({
+  enabled: true,         // or config.debug
+  trackHttp: true,       // Intercepts wx.request, uploadFile, downloadFile
+  trackNativePlugin: true // Intercepts wx.invokeNativePlugin & wx.invoke (TCMPP JSBridge)
 });
 ```
 
-### Step 4: Register Component in `app.json` or Page JSON
+---
 
-Register the component globally in `app.json` (or in any specific page JSON):
+### 3. Register Component in `app.json`
+
+Register the component globally in `app.json`:
 
 ```json
 {
   "usingComponents": {
-    "chucker": "wx-chucker"
+    "chucker": "/components/chucker/index"
   }
 }
 ```
 
-### Step 5: Add Component Tag in Page WXML
+---
 
-In your page's `.wxml` file (e.g. `pages/home/index.wxml`):
+### 4. Add Component Tag in WXML
+
+In any page or global overlay template (e.g. `pages/home/index.wxml`):
 
 ```html
 <chucker />
