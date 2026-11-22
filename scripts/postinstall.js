@@ -32,12 +32,16 @@ function run() {
     // 1. Determine consumer project root
     let projectRoot = process.env.INIT_CWD;
 
-    // Fallback if INIT_CWD is missing: look above node_modules/wx-chucker
-    if (!projectRoot || projectRoot === process.cwd()) {
-      const parts = __dirname.split(path.sep);
-      const nmIndex = parts.lastIndexOf("node_modules");
-      if (nmIndex > 0) {
-        projectRoot = parts.slice(0, nmIndex).join(path.sep);
+    if (!projectRoot) {
+      const cwd = process.cwd();
+      if (fs.existsSync(path.join(cwd, "app.json")) || fs.existsSync(path.join(cwd, "project.config.json"))) {
+        projectRoot = cwd;
+      } else {
+        const parts = __dirname.split(path.sep);
+        const nmIndex = parts.lastIndexOf("node_modules");
+        if (nmIndex > 0) {
+          projectRoot = parts.slice(0, nmIndex).join(path.sep);
+        }
       }
     }
 
