@@ -5,6 +5,9 @@
   "main": "miniprogram_dist/chucker.js",
   "miniprogram": "miniprogram_dist",
   "types": "miniprogram_dist/index.d.ts",
+  "bin": {
+    "wx-chucker": "scripts/postinstall.js"
+  },
   "scripts": {
     "build": "node scripts/build.js",
     "test": "node tests/run_all.js",
