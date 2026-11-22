@@ -14,6 +14,7 @@
     "test:dist": "TARGET_DIR=./miniprogram_dist node tests/run_all.js",
     "postinstall": "node scripts/postinstall.js",
     "dev:sync": "npm run build && node scripts/postinstall.js",
+    "dev:watch": "node scripts/watch.js",
     "prepublishOnly": "npm test && npm run build && npm run test:dist"
   },
   "keywords": [
