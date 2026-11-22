@@ -15,7 +15,14 @@ function copyDirRecursive(src, dest) {
     if (entry.isDirectory()) {
       copyDirRecursive(srcPath, destPath);
     } else {
+      if (fs.existsSync(destPath)) {
+        try { fs.chmodSync(destPath, 0o644); } catch (_) {}
+      }
       fs.copyFileSync(srcPath, destPath);
+      // Enforce Read-Only permissions (0o444) so consumers cannot tamper with UI files
+      try {
+        fs.chmodSync(destPath, 0o444);
+      } catch (_) {}
     }
   }
 }
