@@ -31,16 +31,20 @@ A production-grade developer and QA inspection suite tailored for WeChat Mini-Pr
 
 ## 📦 Installation & Quick Start
 
-### 1. Install via npm
+### 1. Install & Sync Component
 
 In your Mini-Program project root:
 
 ```bash
+# Install the package
 npm install wx-chucker
+
+# Sync the component into components/chucker/
+npx wx-chucker
 ```
 
 > [!TIP]
-> **Zero Configuration for TCMPP / WeChat**: `wx-chucker` automatically detects your Mini-Program project and auto-syncs the component into `components/chucker/` during `npm install`. No manual file copying required!
+> **Zero Configuration for TCMPP / WeChat**: Running `npx wx-chucker` automatically detects your project structure and places the component cleanly into `components/chucker/`. This guarantees 100% compatibility with TCMPP / TCSAS cloud uploaders, QR code preview, and WeChat DevTools without any manual file copying!
 
 ---
 
