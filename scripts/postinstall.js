@@ -30,7 +30,7 @@ function copyDirRecursive(src, dest) {
 function run() {
   try {
     // 1. Determine consumer project root
-    let projectRoot = process.env.INIT_CWD;
+    let projectRoot = process.argv[2] ? path.resolve(process.argv[2]) : process.env.INIT_CWD;
 
     if (!projectRoot) {
       const cwd = process.cwd();
