@@ -72,6 +72,22 @@ function run() {
 
     copyDirRecursive(srcDir, targetDir);
 
+    // Enforce VS Code Workspace Read-Only Lock so editors cannot even type in the files
+    try {
+      const vscodeDir = path.join(projectRoot, ".vscode");
+      const vscodeSettings = path.join(vscodeDir, "settings.json");
+      if (!fs.existsSync(vscodeDir)) {
+        fs.mkdirSync(vscodeDir, { recursive: true });
+      }
+      let settings = {};
+      if (fs.existsSync(vscodeSettings)) {
+        try { settings = JSON.parse(fs.readFileSync(vscodeSettings, "utf8")); } catch (_) {}
+      }
+      settings["files.readonlyInclude"] = settings["files.readonlyInclude"] || {};
+      settings["files.readonlyInclude"]["components/chucker/**"] = true;
+      fs.writeFileSync(vscodeSettings, JSON.stringify(settings, null, 2) + "\n", "utf8");
+    } catch (_) {}
+
     console.log("\n======================================================");
     console.log("⚡ [wx-chucker] Auto-synced native component for TCMPP / WeChat!");
     console.log(`📁 Installed at: components/chucker/`);
